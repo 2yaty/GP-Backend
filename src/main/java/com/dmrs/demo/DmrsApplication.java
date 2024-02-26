@@ -1,13 +1,21 @@
 package com.dmrs.demo;
 
+import com.dmrs.demo.Auth.user.ApplicationUser;
+import com.dmrs.demo.Auth.user.Role;
+import com.dmrs.demo.Auth.user.RoleRepository;
+import com.dmrs.demo.Auth.user.UserRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
 public class DmrsApplication {
@@ -31,5 +39,21 @@ public class DmrsApplication {
     urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
     return new CorsFilter(urlBasedCorsConfigurationSource);
   }
+
+    @Bean
+    CommandLineRunner run(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncode){
+        return args ->{
+            if(roleRepository.findByAuthority("ADMIN").isPresent()) return;
+            Role adminRole = roleRepository.save(new Role("ADMIN"));
+            roleRepository.save(new Role("USER"));
+
+            Set<Role> roles = new HashSet<>();
+            roles.add(adminRole);
+
+            ApplicationUser admin = new ApplicationUser( "admin", passwordEncode.encode("password"), roles);
+
+            userRepository.save(admin);
+        };
+    }
 
 }
