@@ -95,7 +95,7 @@ public class AuthenticationService {
 
         ResponsePayload rp = ResponsePayload.builder()
                 .code(HttpStatus.OK)
-                .successMessage("User logged in successfully")
+                .successMessage("User Registered successfully")
                 .data(
                         null
                 ).build();

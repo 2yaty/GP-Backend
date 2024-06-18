@@ -25,6 +25,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfiguration {
@@ -49,6 +50,11 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    public APIKeyAuthFilter apiKeyAuthFilter() {
+        return new APIKeyAuthFilter();
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
             .csrf(AbstractHttpConfigurer::disable)
@@ -65,6 +71,8 @@ public class SecurityConfiguration {
         http.sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             );
+
+         http.addFilterBefore(apiKeyAuthFilter(), UsernamePasswordAuthenticationFilter.class);
                 
         return http.build();
     }

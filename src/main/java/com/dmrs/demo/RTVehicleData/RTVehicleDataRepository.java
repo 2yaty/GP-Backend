@@ -10,7 +10,7 @@ public interface RTVehicleDataRepository extends MongoRepository<RTVehicleData,S
 
 //    Iterable<VehicleData> findAllByDriverEmail(String username);
 
-    Optional<RTVehicleData> findVehicleDataByTimestamp(BSONTimestampCodec timestamp);
+    Optional<RTVehicleData> findVehicleDataByTimestamp(String timestamp);
 
 
 }
