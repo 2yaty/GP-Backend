@@ -114,12 +114,14 @@ public class AuthenticationService {
             );
 
             String token = tokenService.generateJwt(auth);
-
+            String userId = userService.getUserByUsername(username).getId();
+            String driverId = driverService.getDriverByUserID(userId).getId();
+            String vehicleSerialNumber = vehicleService.getVehicleByDriverId(driverId).get().getSerialNumber();
             rp = ResponsePayload.builder()
                     .code(HttpStatus.OK)
                     .successMessage("User logged in successfully")
                     .data(
-                            Map.of("userId", userService.getUserByUsername(username).getId(), "token", token)
+                            Map.of("driverId", driverId, "serialNumber",vehicleSerialNumber, "token", token)
                     ).build();
 
 

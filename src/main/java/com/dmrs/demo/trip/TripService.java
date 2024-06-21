@@ -29,7 +29,14 @@ public record TripService(TripRepository tripRepo, TripEventsService tripEventsS
       trip.setStart_timestamp(tripRequest.start_time());
       trip.setEnd_timestamp(tripRequest.end_time());
       trip.setDistance(tripRequest.distance());
-      trip.setStatus(tripRequest.status());
+
+      if(tripRequest.totalScore() > 80) {
+          trip.setStatus(Status.NORMAL);
+      }else if (tripRequest.totalScore() > 60) {
+          trip.setStatus(Status.AGGRESSIVE);
+      }else {
+          trip.setStatus(Status.VERY_AGGRESSIVE);
+      }
       trip = tripRepo.save(trip);
 
       TripEventsDTO tripEventsDTO = new TripEventsDTO();

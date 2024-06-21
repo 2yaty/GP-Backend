@@ -16,7 +16,7 @@ public class DriverController {
 
     @GetMapping
     public DriverDTO getDriverById(@RequestParam String id){
-        Driver driver = driverService.getDriverByUserID(id);
+        Driver driver = driverService.getDriverById(id);
         return new DriverDTO(driver.getId(), driver.getFirstName(), driver.getLastName(), driver.getUser().getUsername(), driver.getGender(), driver.getAge(), driver.getPhone(), driver.getJobTitle(), driver.getImgUrl());
     }
 

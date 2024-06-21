@@ -40,6 +40,7 @@ public record DriverService(DriverRepository driverRepo,
 
       Driver driver = new Driver();
       driver.setId(driverRequest.getId());
+      driver.setUser(oldDriver.getUser());
 
       if (driverRequest.getFirstName() == null) driver.setFirstName(oldDriver.getFirstName());
       else driver.setFirstName(driverRequest.getFirstName());
